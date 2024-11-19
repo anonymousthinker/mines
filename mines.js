@@ -21,7 +21,7 @@ function createFooter(footer) {
   return footer + '┛';
 }
 
-function createFirstMiddle(middle) {
+function createField(middle) {
   for (let index = 1; index <= 10; index++) {
     middle += '┃   ';
   }
@@ -29,7 +29,7 @@ function createFirstMiddle(middle) {
   return middle + '┃';
 }
 
-function createMiddle(middle, playerInput, mineFound) {
+function updateField(middle, playerInput, mineFound) {
   let updatedMiddle = '';
   let index = 0;
   while(index <= 40) {
@@ -46,28 +46,32 @@ function createMiddle(middle, playerInput, mineFound) {
   return updatedMiddle;
 }
 
-function main() {
-  let mineFound = false;
-  let header = '┏';
-  let footer = '┗';
-  let middle = createFirstMiddle('');
-  let noOfDiamonds = 8;
-  console.log(createHeader(header));
-  console.log(middle);
-  console.log(createFooter(footer));
-
+function runGame(mineFound, noOfDiamonds, field) {
   while (!mineFound && noOfDiamonds > 0) {
     const playerInput = +takePlayerInput();
     mineFound = playerInput === MINE_ONE || playerInput === MINE_TWO;
 
-    console.log(createHeader(header));
-    middle = createMiddle(middle, playerInput, mineFound);
-    console.log(middle);
-    console.log(createFooter(footer));
+    console.log(createHeader('┏'));
+    field = updateField(field, playerInput, mineFound);
+    console.log(field);
+    console.log(createFooter('┗'));
     noOfDiamonds -= 1;
   }
 
-  return mineFound ? 'Oops! Blasted💥' : 'Congrats on finding all 💎!'
+  return mineFound ? 'Oops! Blasted💥' : 'Congrats on finding all 💎!';
+}
+
+function main() {
+  const mineFound = false;
+  const headerOne = 'Find all 💎 in the field to win!';
+  const headerTwo = ' Also dont let the 💣 find u first!\n┏';
+  const noOfDiamonds = 8;
+  const field = createField('');
+  console.log(createHeader(headerOne + headerTwo));
+  console.log(field);
+  console.log(createFooter('┗'));
+
+  return runGame(mineFound, noOfDiamonds, field);
 }
 
 console.log(main());
