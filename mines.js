@@ -2,8 +2,6 @@ const MINE_ONE = Math.floor((Math.random()) * 10);
 const MINE_TWO = Math.floor((Math.random()) * 10);
 const FIELD_LENGTH = 40;
 
-// console.log(MINE_ONE, MINE_TWO)
-
 function takePlayerInput() {
   return prompt('Cell number:');
 }
