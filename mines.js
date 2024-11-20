@@ -2,52 +2,62 @@ const MINE_ONE = Math.floor((Math.random()) * 10);
 const MINE_TWO = Math.floor((Math.random()) * 10);
 const FIELD_LENGTH = 40;
 
+// console.log(MINE_ONE, MINE_TWO)
+
 function takePlayerInput() {
   return prompt('Cell number:');
 }
 
+function createHeaderContents(index) {
+  return index % 4 === 0 ? '┳' : '━';
+}
+
 function createHeader(header) {
   for (let index = 1; index < FIELD_LENGTH; index++) {
-    header += '━';
+    header += createHeaderContents(index);
   }
 
   return header + '┓';
 }
 
+function createFooterContents(index) {
+  return index % 4 === 0 ? '┻' : '━';
+}
+
 function createFooter(footer) {
   for (let index = 1; index < FIELD_LENGTH; index++) {
-    footer += '━';
+    footer += createFooterContents(index);
   }
 
   return footer + '┛';
 }
 
-function createField(middle) {
+function createField(field) {
   for (let index = 1; index <= FIELD_LENGTH / 4; index++) {
-    middle += '┃   ';
+    field += '┃   ';
   }
 
-  return middle + '┃';
+  return field + '┃';
 }
 
-function updateFieldContent(middle, playerInput, mineFound, index) {
-  if (middle[index] === ' ' && index === playerInput * 4 + 2) {
+function updateFieldContent(field, playerInput, mineFound, index) {
+  if (field[index] === ' ' && index === playerInput * 4 + 2) {
     return mineFound ? '☠︎︎' : '♦';
   }
 
-  return middle[index];
+  return field[index];
 }
 
-function updateField(middle, playerInput, mineFound) {
-  let updatedMiddle = '';
+function updateField(field, playerInput, mineFound) {
+  let updatedField = '';
   let index = 0;
 
   while (index <= FIELD_LENGTH) {
-    updatedMiddle += updateFieldContent(middle, playerInput, mineFound, index);
+    updatedField += updateFieldContent(field, playerInput, mineFound, index);
     index += 1;
   }
 
-  return updatedMiddle;
+  return updatedField;
 }
 
 function runGame(mineFound, noOfDiamonds, field) {
@@ -62,7 +72,7 @@ function runGame(mineFound, noOfDiamonds, field) {
     noOfDiamonds -= 1;
   }
 
-  return mineFound ? 'Oops! Blasted💥' : 'Congrats on finding all 💎!';
+  return mineFound ? 'Oops! Blasted 💥 ' : 'Congrats on finding all 💎!';
 }
 
 function main() {
