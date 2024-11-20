@@ -40,7 +40,7 @@ function createField(field) {
 
 function updateFieldContent(field, playerInput, mineFound, index) {
   if (field[index] === ' ' && index === playerInput * 4 + 2) {
-    return mineFound ? '☠︎︎' : '♦';
+    return mineFound ? '⌖' : '♦';
   }
 
   return field[index];
@@ -48,14 +48,29 @@ function updateFieldContent(field, playerInput, mineFound, index) {
 
 function updateField(field, playerInput, mineFound) {
   let updatedField = '';
-  let index = 0;
 
-  while (index <= FIELD_LENGTH) {
+  for(let index = 0; index <= FIELD_LENGTH; index++) {
     updatedField += updateFieldContent(field, playerInput, mineFound, index);
-    index += 1;
   }
 
   return updatedField;
+}
+
+function createResultContents(field, index) {
+  const indexAtMine = index === MINE_ONE * 4 + 2 || index === MINE_TWO * 4 + 2;
+  return indexAtMine ? '⌖' : field[index];
+}
+
+function createResult(field) {
+  console.log(createHeader('┏'));
+  let updatedResult = '';
+
+  for (let index = 0; index <= FIELD_LENGTH; index++) {
+    updatedResult += createResultContents(field, index);
+  }
+
+  console.log(updatedResult);
+  console.log(createFooter('┗'));
 }
 
 function runGame(mineFound, noOfDiamonds, field) {
@@ -70,6 +85,8 @@ function runGame(mineFound, noOfDiamonds, field) {
     noOfDiamonds -= 1;
   }
 
+  createResult(field);
+  
   return mineFound ? 'Oops! Blasted 💥 ' : 'Congrats on finding all 💎!';
 }
 
