@@ -31,7 +31,7 @@ function createField(middle) {
 }
 
 function updateFieldContent(middle, playerInput, mineFound, index) {
-  if (middle[index] === ' ' && index === playerInput * 4 + 1) {
+  if (middle[index] === ' ' && index === playerInput * 4 + 2) {
     return mineFound ? '☠︎︎' : '♦';
   }
 
