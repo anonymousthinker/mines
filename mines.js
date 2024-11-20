@@ -49,7 +49,7 @@ function updateFieldContent(field, playerInput, mineFound, index) {
 function updateField(field, playerInput, mineFound) {
   let updatedField = '';
 
-  for(let index = 0; index <= FIELD_LENGTH; index++) {
+  for (let index = 0; index <= FIELD_LENGTH; index++) {
     updatedField += updateFieldContent(field, playerInput, mineFound, index);
   }
 
@@ -73,8 +73,20 @@ function createResult(field) {
   console.log(createFooter('┗'));
 }
 
+function isInputNew(userInput, playerInput) {
+  for (let index = 0; index < userInput.length; index++) {
+    if (userInput[index] === '' + playerInput) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
 function runGame(mineFound, noOfDiamonds, field) {
-  while (!mineFound && noOfDiamonds > 0) {
+  let userInput = '';
+
+  while (!mineFound && noOfDiamonds < 8) {
     const playerInput = +takePlayerInput();
     mineFound = playerInput === MINE_ONE || playerInput === MINE_TWO;
 
@@ -82,25 +94,29 @@ function runGame(mineFound, noOfDiamonds, field) {
     field = updateField(field, playerInput, mineFound);
     console.log(field);
     console.log(createFooter('┗'));
-    noOfDiamonds -= 1;
+    
+    if (isInputNew(userInput, playerInput)){
+      userInput += playerInput;
+      noOfDiamonds += 1;
+    }
   }
 
+  const finalMsg = mineFound ? 'Oops! Blasted💥' : 'Congrats on finding all💎';
+  console.log(finalMsg);
   createResult(field);
-  
-  return mineFound ? 'Oops! Blasted 💥 ' : 'Congrats on finding all 💎!';
 }
 
 function main() {
   const mineFound = false;
   const headerOne = 'Find all 💎 in the field to win!';
-  const headerTwo = ' Also dont let the 💣 find u first!\n┏';
-  const noOfDiamonds = 8;
+  const headerTwo = ' But dont let the 💣 find u first!\n┏';
+  const noOfDiamonds = 0;
   const field = createField('');
   console.log(createHeader(headerOne + headerTwo));
   console.log(field);
   console.log(createFooter('┗'));
 
-  return runGame(mineFound, noOfDiamonds, field);
+  runGame(mineFound, noOfDiamonds, field);
 }
 
-console.log(main());
+main();
