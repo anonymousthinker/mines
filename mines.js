@@ -10,7 +10,8 @@ function createHeaderContents(index) {
   return index % 4 === 0 ? '┳' : '━';
 }
 
-function createHeader(header) {
+function createHeader() {
+  let header = '┏';
   for (let index = 1; index < FIELD_LENGTH; index++) {
     header += createHeaderContents(index);
   }
@@ -22,7 +23,9 @@ function createFooterContents(index) {
   return index % 4 === 0 ? '┻' : '━';
 }
 
-function createFooter(footer) {
+function createFooter() {
+  let footer = '┗';
+
   for (let index = 1; index < FIELD_LENGTH; index++) {
     footer += createFooterContents(index);
   }
@@ -30,7 +33,9 @@ function createFooter(footer) {
   return footer + '┛';
 }
 
-function createField(field) {
+function createField() {
+  let field = '';
+
   for (let index = 1; index <= FIELD_LENGTH / 4; index++) {
     field += '┃   ';
   }
@@ -62,15 +67,13 @@ function createResultContents(field, index) {
 }
 
 function createResult(field) {
-  console.log(createHeader('┏'));
-  let updatedResult = '';
+  let updatedField = '';
 
   for (let index = 0; index <= FIELD_LENGTH; index++) {
-    updatedResult += createResultContents(field, index);
+    updatedField += createResultContents(field, index);
   }
 
-  console.log(updatedResult);
-  console.log(createFooter('┗'));
+  return createHeader() + '\n' + updatedField + '\n' + createFooter();
 }
 
 function isInputNew(userInput, playerInput) {
@@ -89,11 +92,9 @@ function runGame(mineFound, noOfDiamonds, field) {
   while (!mineFound && noOfDiamonds < 8) {
     const playerInput = +takePlayerInput();
     mineFound = playerInput === MINE_ONE || playerInput === MINE_TWO;
-
-    console.log(createHeader('┏'));
     field = updateField(field, playerInput, mineFound);
-    console.log(field);
-    console.log(createFooter('┗'));
+    const message = createHeader() + '\n' + field + '\n' + createFooter();
+    console.log(message);
     
     if (isInputNew(userInput, playerInput)){
       userInput += playerInput;
@@ -102,19 +103,22 @@ function runGame(mineFound, noOfDiamonds, field) {
   }
 
   const finalMsg = mineFound ? 'Oops! Blasted💥' : 'Congrats on finding all💎';
-  console.log(finalMsg);
-  createResult(field);
+  console.log(finalMsg + '\n' + createResult(field));
 }
 
 function main() {
   const mineFound = false;
   const headerOne = 'Find all 💎 in the field to win!';
-  const headerTwo = ' But dont let the 💣 find u first!\n┏';
+  const headerTwo = ' But dont let the 💣 find u first!';
   const noOfDiamonds = 0;
-  const field = createField('');
-  console.log(createHeader(headerOne + headerTwo));
-  console.log(field);
-  console.log(createFooter('┗'));
+  const field = createField();
+
+  let initialInstruction = headerOne + headerTwo + '\n';
+  initialInstruction += createHeader() + '\n';
+  initialInstruction += field + '\n';
+  initialInstruction += createFooter();
+
+  console.log(initialInstruction);
 
   runGame(mineFound, noOfDiamonds, field);
 }
